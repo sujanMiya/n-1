@@ -3,10 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AuthRequest;
+use App\Services\AuthServices;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    protected AuthServices $authService;
+    public function __construct(AuthServices $authService)
+    {
+        $this->authService = $authService;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -18,7 +25,7 @@ class AuthController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AuthRequest $request)
     {
         //
     }
