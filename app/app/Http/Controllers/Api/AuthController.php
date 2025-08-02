@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
+use Illuminate\Http\JsonResponse;
 use App\Services\AuthServices;
 use Illuminate\Http\Request;
 
@@ -25,9 +26,14 @@ class AuthController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AuthRequest $request)
+    public function store(AuthRequest $request): JsonResponse
     {
-        //
+        try {
+            $user = $this->authService->login($request->validated());
+            return apiSuccessResponse($user, 'User logged in successfully', 200);
+        } catch (\Exception $e) {
+            return apiErrorResponse('Login failed: ' . $e->getMessage(), 400);
+        }
     }
 
     /**

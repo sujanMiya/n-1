@@ -10,7 +10,7 @@ use App\Services\RegisterService;
 
 class RegisterController extends Controller
 {
-    private RegisterService $registerService;
+    protected RegisterService $registerService;
 
     public function __construct(RegisterService $registerService)
     {
