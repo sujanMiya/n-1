@@ -29,7 +29,7 @@ class AuthController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(AuthRequest $request): JsonResponse
+    public function login(AuthRequest $request): JsonResponse
     {
         try {
             $user = $this->authService->login($request->validated());
