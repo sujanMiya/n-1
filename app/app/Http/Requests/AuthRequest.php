@@ -26,4 +26,10 @@ class AuthRequest extends FormRequest
             'password' => 'required|string|min:8',
         ];
     }
+    // public function message()
+    // {
+    //     return[
+    //         'require.email' => 
+    //     ];
+    // }
 }
