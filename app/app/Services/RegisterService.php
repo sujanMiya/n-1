@@ -3,10 +3,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\UserEnum;
 use App\Models\User;
-use App\Models\Register;
-use Illuminate\Support\Carbon;
-use App\Http\Requests\RegisterRequest;
 
 class RegisterService
 {
@@ -17,7 +15,7 @@ class RegisterService
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'role' => $data['role'] ?? 'user',
+            'role' => $data['role'] ?? UserEnum::USER,
         ]);
         $user['access_token'] = $user->createToken('auth_token')->accessToken;
         $user['token_type'] = 'Bearer';

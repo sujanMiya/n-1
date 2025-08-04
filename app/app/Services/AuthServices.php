@@ -24,4 +24,13 @@ class AuthServices
         $user['token_type'] = 'Bearer';
         return $user;
     }
+    public function logout()
+    {
+        if (!Auth::check()) {
+            throw new \Exception('No authenticated user', 401);
+        }
+        $token = Auth::user()->token();
+        dd($token);
+        $token->revoke();
+    }
 }

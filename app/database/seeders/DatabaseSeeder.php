@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Book;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Enums\UserEnum;
 use App\Models\User;
-use App\Models\Author;
 use Illuminate\Database\Seeder;
-use Database\Seeders\AuthorsBooksSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,6 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+             User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('password'),
+            'role' => UserEnum::ADMIN
+        ]);
         //          $this->call([
         // 	AuthorsBooksSeeder::class,
     	// ]);
