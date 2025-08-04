@@ -14,10 +14,10 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function () {
     Route::get('');
 });
 Route::group(['prefix' => 'v1'], function () {
-    Route::get('/register', [RegisterController::class, 'index'])->name('api.register.index');
-    Route::post('/register', [RegisterController::class, 'store'])->name('api.register.store');
-    Route::get('/login', [AuthController::class, 'index'])->name('api.login.index');
-    Route::post('/login', [AuthController::class, 'store'])->name('api.login.store');
+    Route::get('/register', [AuthController::class, 'registerView'])->name('api.register.registerView');
+    Route::post('/register', [AuthController::class, 'register'])->name('api.register.register');
+    Route::get('/login', [AuthController::class, 'loginView'])->name('api.login.loginView');
+    Route::post('/login', [AuthController::class, 'login'])->name('api.login.login');
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/services', [ServiceController::class, 'index']);
 });

@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|string|in:user,admin', // Example roles
+
         ];
     }
     public function messages(): array
@@ -34,7 +34,6 @@ class RegisterRequest extends FormRequest
             'name.required' => 'The name field is required.',
             'email.required' => 'The email field is required.',
             'password.required' => 'The password field is required.',
-            'role.required' => 'The role field is required.',
         ];
     }
 }

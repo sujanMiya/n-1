@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Services\AuthServices;
 use Illuminate\Http\JsonResponse;
@@ -31,60 +33,49 @@ class AuthController extends Controller
     {
         try {
             $user = $this->authService->login($request->validated());
-            return apiSuccessResponse($user, 'User logged in successfully', 200);
+            return apiSuccessResponse(new UserResource($user), 'User logged in successfully', 200);
         } catch (\Exception $e) {
             return apiErrorResponse('Login failed: ' . $e->getMessage(), 400);
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function register(RegisterRequest $request): JsonResponse
     {
-        //
+        try {
+            $user = $this->authService->registerUser($request->validated());
+
+            return apiSuccessResponse(new UserResource($user), 'User registered successfully', 201);
+        } catch (\Exception $e) {
+            return apiErrorResponse('Registration failed: ' . $e->getMessage(), 400);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
     public function logout(Request $request): JsonResponse
     {
         try {
-                    // Get the authenticated user via guard
-                    
-        $user = Auth::guard('api')->user();
-        dd($user);
-        if (!$user) {
+            // Get the authenticated user via guard
+
+            $user = Auth::guard('api')->user();
+            dd($user);
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No authenticated user'
+                ], 401);
+            }
+
+            // Revoke the token that was used for authentication
+            $request->user()->token()->revoke();
+
             return response()->json([
-                'success' => false,
-                'message' => 'No authenticated user'
-            ], 401);
-        }
+                'success' => true,
+                'message' => 'Successfully logged out'
+            ]);
 
-        // Revoke the token that was used for authentication
-        $request->user()->token()->revoke();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Successfully logged out'
-        ]);
-    
-    return response()->json(['message' => 'Successfully logged out']);
+            return response()->json(['message' => 'Successfully logged out']);
             $this->authService->logout();
-            return apiSuccessResponse( 'User logout successfully', 200);
+            return apiSuccessResponse('User logout successfully', 200);
         } catch (\Exception $e) {
             return apiErrorResponse('Logout failed: ' . $e->getMessage(), 400);
         }

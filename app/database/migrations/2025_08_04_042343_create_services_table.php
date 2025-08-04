@@ -5,8 +5,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->uid('uid')->unique()->index();
+            $table->string('uid', 36)->unique();
             $table->string('name', 100);
             $table->string('image_url')->nullable();
             $table->string('description');
             $table->decimal('prise', 10, 2);
-            $table->enum('status',['active','inactive'])->default(ServiceEnum::ACTIVE);
+            $table->enum('status', ['active', 'inactive'])->default(ServiceEnum::ACTIVE);
             $table->timestamps();
         });
     }
