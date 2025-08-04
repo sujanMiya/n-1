@@ -11,6 +11,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/services', [ServiceController::class, 'store']);
     Route::put('/services/{id}', [ServiceController::class, 'update']);
+    Route::get('');
 });
 Route::group(['prefix' => 'v1'], function () {
     Route::get('/register', [RegisterController::class, 'index'])->name('api.register.index');

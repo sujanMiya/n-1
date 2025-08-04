@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Enums\ServiceEnum;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -18,7 +19,7 @@ return new class extends Migration
             $table->string('image_url')->nullable();
             $table->string('description');
             $table->decimal('prise', 10, 2);
-            $table->enum('status',['active','inactive'])->default('active');
+            $table->enum('status',['active','inactive'])->default(ServiceEnum::ACTIVE);
             $table->timestamps();
         });
     }
