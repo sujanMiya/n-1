@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->uid('uid')->index();
+            $table->uid('uid')->unique()->index();
             $table->string('name', 100);
+            $table->string('image_url')->nullable();
             $table->string('description');
             $table->decimal('prise', 10, 2);
             $table->enum('status',['active','inactive'])->default('active');

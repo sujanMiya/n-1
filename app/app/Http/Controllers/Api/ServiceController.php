@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Service;
+use App\Services\Services;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ServiceRequest;
 
 class ServiceController extends Controller
 {
+    protected Services $service;
+    public function __construct(Services $service)
+    {
+        $this->service = $service;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -19,9 +25,14 @@ class ServiceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(ServiceRequest $request)
     {
-        //
+        try {
+            $service = $this->service->storData($request->validated());
+            return apiSuccessResponse($service, 'Service Create successfully', 200);
+        } catch (\Exception $e) {
+            return apiErrorResponse('Service Create failed: ' . $e->getMessage(), 400);
+        }
     }
 
     /**
@@ -35,7 +46,7 @@ class ServiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Service $service)
+    public function show(Services $service)
     {
         //
     }
