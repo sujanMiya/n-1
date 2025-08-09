@@ -1,7 +1,10 @@
 <?php 
 
 declare(strict_types=1);
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\JsonResponse;
+use App\Utilities\ApiJsonResponse;
+use Illuminate\Pagination\CursorPaginator;
 /**
  * Helper functions for the application.
  *
@@ -83,21 +86,32 @@ if (!function_exists('str_unique_with_prefix')) {
         return $prefix . str_unique();
     }
 }
-if (!function_exists('cursor_pagination_meta')) {
+if (!function_exists('pagination_meta')) {
 
     /**
-     * @param CursorPaginator $paginator
+    //  * @param CursorPaginator $paginator
      * @return array
      */
-    function cursor_pagination_meta(CursorPaginator $paginator): array
+    function pagination_meta( $paginator): array
     {
         return [
-            'path' => $paginator->path(),
-            'per_page' => $paginator->perPage(),
-            'next_cursor' => $paginator->nextCursor()?->encode(),
+            'cur_page_total' => $paginator->count(),
+            'current_page' => $paginator->currentPage(),
+            'last_page' => $paginator->lastPage(),
+            'has_more' => $paginator->hasMorePages(),
             'next_page_url' => $paginator->nextPageUrl(),
-            'prev_cursor' => $paginator->previousCursor()?->encode(),
-            'prev_page_url' => $paginator->previousPageUrl(),
+            'total' => $paginator->total(),
+            'per_page' => $paginator->perPage(),
         ];
+    }
+}
+if (!function_exists('api')) {
+    /**
+     * @param array|Arrayable|string|null $data
+     * @return ApiJsonResponse
+     */
+    function api(array|Arrayable|string|null $data = []): ApiJsonResponse
+    {
+        return new ApiJsonResponse($data);
     }
 }
