@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->string('name', 100);
             $table->string('image_url')->nullable();
             $table->string('description');
-            $table->decimal('prise', 10, 2);
-            $table->enum('status', ['active', 'inactive'])->default(ServiceEnum::ACTIVE);
+            $table->decimal('price', 10, 2);
+            $table->tinyInteger('status')->default(ServiceEnum::ACTIVE);
             $table->timestamps();
         });
     }

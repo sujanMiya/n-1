@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\ServiceResource;
 use App\Services\Services;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceRequest;
@@ -19,28 +21,25 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $services = $this->service->all();
+            return JsonResource::collection($service);
+        } catch (\Exception $e) {
+            //throw $th;
+        }
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(ServiceRequest $request)
+    public function store(ServiceRequest $request): JsonResponse
     {
         try {
-            $service = $this->service->storData($request->validated());
-            return apiSuccessResponse($service, 'Service Create successfully', 200);
+            $service = $this->service->store($request->validated());
+            return apiSuccessResponse(new ServiceResource($service), 'Service Create successfully', 200);
         } catch (\Exception $e) {
             return apiErrorResponse('Service Create failed: ' . $e->getMessage(), 400);
         }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**

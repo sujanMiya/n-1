@@ -4,8 +4,9 @@ namespace App\Services;
 use app\Models\Service;
 class BookingService
 {
-    public function storData(array $data): Service
+    public function store(array $data): Service
     {
+        dd($data);
         return Service::create($data);
     }
 }

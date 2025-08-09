@@ -52,7 +52,7 @@ class AuthServices
     {
         return User::create($userDto->toArray());
     }
-    public function prepareCreateUserDTO(array $data)
+    public function prepareCreateUserDTO(array $data): UserDTO
     {
         return new UserDTO(
             name: Arr::get($data, 'name'),

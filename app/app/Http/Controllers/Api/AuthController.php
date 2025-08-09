@@ -25,6 +25,10 @@ class AuthController extends Controller
     {
         //
     }
+    public function loginView(RegisterRequest $request)
+    {
+        
+    }
 
     /**
      * Store a newly created resource in storage.

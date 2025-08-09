@@ -15,6 +15,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/register', [AuthController::class, 'registerView'])->name('api.register.registerView');
     Route::post('/register', [AuthController::class, 'register'])->name('api.register.register');
     Route::get('/login', [AuthController::class, 'loginView'])->name('api.login.loginView');
-    Route::post('/login', [AuthController::class, 'login'])->name('api.login.login');
+    Route::post('/login', [AuthController::class, 'login']);
     Route::get('/services', [ServiceController::class, 'index']);
 });

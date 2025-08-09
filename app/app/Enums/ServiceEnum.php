@@ -2,10 +2,10 @@
 declare(strict_types=1);
 namespace App\Enums;
 
-enum ServiceEnum :string
+enum ServiceEnum :int
 {
     use EnumTrait;
-    case ACTIVE = 'active';
-    case INACTIVE = 'inactive';
+    case ACTIVE = 1;
+    case INACTIVE = 2;
 
 }

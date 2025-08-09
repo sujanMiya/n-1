@@ -22,7 +22,11 @@ class ServiceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string',
+            'image_url' => 'nullable|url',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'status' => 'required',
         ];
     }
 }
