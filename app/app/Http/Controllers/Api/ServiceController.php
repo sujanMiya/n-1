@@ -23,6 +23,7 @@ class ServiceController extends Controller
     {
         try {
             $services = $this->service->all();
+            dd($services);
             return JsonResource::collection($service);
         } catch (\Exception $e) {
             //throw $th;

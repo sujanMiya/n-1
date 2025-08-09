@@ -83,3 +83,21 @@ if (!function_exists('str_unique_with_prefix')) {
         return $prefix . str_unique();
     }
 }
+if (!function_exists('cursor_pagination_meta')) {
+
+    /**
+     * @param CursorPaginator $paginator
+     * @return array
+     */
+    function cursor_pagination_meta(CursorPaginator $paginator): array
+    {
+        return [
+            'path' => $paginator->path(),
+            'per_page' => $paginator->perPage(),
+            'next_cursor' => $paginator->nextCursor()?->encode(),
+            'next_page_url' => $paginator->nextPageUrl(),
+            'prev_cursor' => $paginator->previousCursor()?->encode(),
+            'prev_page_url' => $paginator->previousPageUrl(),
+        ];
+    }
+}
