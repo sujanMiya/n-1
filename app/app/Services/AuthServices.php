@@ -23,7 +23,7 @@ class AuthServices
         }
 
         $user = Auth::user();
-        $user['access_token'] = $user->createToken('auth_token')->accessToken;
+        $user['access_token'] = $this->generateToken($user);
         $user['token_type'] = 'Bearer';
         return $user;
     }
@@ -40,16 +40,13 @@ class AuthServices
     public function registerUser(array $data): User
     {
         $userDto = $this->prepareCreateUserDTO($data);
-
         $user = $this->createUser($userDto);
-
         $user->access_token = $this->generateToken($user);
-        // $user->save();
         return $user;
     }
     public function generateToken(User $user): string
     {
-        return $user->createToken('auth_token')->accessToken;
+         return $user->createToken('auth_token')->plainTextToken;
     }
     public function createUser(UserDTO $userDto): User
     {
@@ -65,6 +62,5 @@ class AuthServices
             token: null,
             token_type: null
         );
-
     }
 }

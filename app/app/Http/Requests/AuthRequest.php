@@ -29,7 +29,7 @@ class AuthRequest extends FormRequest
     // public function message()
     // {
     //     return[
-    //         'require.email' => 
+    //         'require.email' =>
     //     ];
     // }
 }

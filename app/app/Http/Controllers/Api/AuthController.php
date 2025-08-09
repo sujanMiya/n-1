@@ -21,7 +21,7 @@ class AuthController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function registerView()
     {
         //
     }
@@ -43,7 +43,6 @@ class AuthController extends Controller
     {
         try {
             $user = $this->authService->registerUser($request->validated());
-
             return apiSuccessResponse(new UserResource($user), 'User registered successfully', 201);
         } catch (\Exception $e) {
             return apiErrorResponse('Registration failed: ' . $e->getMessage(), 400);
@@ -51,33 +50,21 @@ class AuthController extends Controller
     }
 
 
-    public function logout(Request $request): JsonResponse
-    {
-        try {
-            // Get the authenticated user via guard
-
-            $user = Auth::guard('api')->user();
-            dd($user);
-            if (!$user) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'No authenticated user'
-                ], 401);
-            }
-
-            // Revoke the token that was used for authentication
-            $request->user()->token()->revoke();
-
+  public function logout(Request $request): JsonResponse
+{
+    try {
+        $user = $request->user();
+        if (!$user) {
             return response()->json([
-                'success' => true,
-                'message' => 'Successfully logged out'
-            ]);
-
-            return response()->json(['message' => 'Successfully logged out']);
-            $this->authService->logout();
-            return apiSuccessResponse('User logout successfully', 200);
-        } catch (\Exception $e) {
-            return apiErrorResponse('Logout failed: ' . $e->getMessage(), 400);
+                'success' => false,
+                'message' => 'Unauthenticated'
+            ], 401);
         }
+        $user->currentAccessToken()->delete();
+        return apiSuccessResponse(null, 'Successfully logged out', 200);
+
+    } catch (\Exception $e) {
+        return apiErrorResponse('logged failed: ' . $e->getMessage(), 400);
     }
+}
 }
