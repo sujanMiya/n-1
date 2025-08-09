@@ -17,4 +17,5 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/login', [AuthController::class, 'loginView'])->name('api.login.loginView');
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/services', [ServiceController::class, 'index']);
+    Route::get('/services/{uid}', [ServiceController::class, 'show']);
 });

@@ -19,7 +19,7 @@ class ServiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
         try {
             $services = $this->service->all();
@@ -27,9 +27,8 @@ class ServiceController extends Controller
                 'services' => $services->toArray()['data'] ?? [],
                 'meta' => pagination_meta($services),
             ])->success(__('success'));
-            // return JsonResource::collection($service);
         } catch (\Exception $e) {
-            //throw $th;
+            return apiErrorResponse('No data found ' . $e->getMessage(), 400);
         }
     }
 
@@ -49,9 +48,17 @@ class ServiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Services $service)
+    public function show(string $uid)
     {
-        //
+        try {
+            $service = $this->service->findServiceByUid($uid);
+            if (!$service) {
+                return api()->fails('No services found');
+            }
+            return apiSuccessResponse(new ServiceResource($service), 'Service Show successfully', 200);
+        } catch (\Exception $e) {
+            return apiErrorResponse('Service Show failed: ' . $e->getMessage(), 400);
+        }
     }
 
     /**

@@ -8,10 +8,9 @@ class Services
 {
     public function all()
     {
-        $servicesCollection = Service::select(['id', 'name', 'uid', 'image_url', 'description', 'price', 'status'])
+        return Service::select(['id', 'name', 'uid', 'image_url', 'description', 'price', 'status'])
             ->latest()
             ->paginate(10);
-        return $servicesCollection;
     }
     /**
      * Method store
@@ -40,5 +39,10 @@ class Services
     protected function createService(ServiceDTO $serviceDTO): Service
     {
         return Service::create($serviceDTO->toArray());
+    }
+    public function findServiceByUid(string $uid): Service
+    {
+        return Service::select(['id', 'name', 'price', 'image_url', 'uid', 'description', 'status'])
+            ->where('uid', $uid)->first();
     }
 }
