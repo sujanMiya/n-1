@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ServiceRequest extends FormRequest
+class UpdateServiceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,6 +29,9 @@ class ServiceRequest extends FormRequest
             'status' => 'required',
         ];
     }
+      /**
+     * Get custom validation error messages
+     */
     public function messages(): array
     {
         return [
