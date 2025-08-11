@@ -6,6 +6,7 @@ use App\Models\Booking;
 use app\Models\Service;
 use App\Models\User;
 use Arr;
+use Carbon\Carbon;
 class BookingService
 {
     public function store(array $data): Service
@@ -30,8 +31,8 @@ class BookingService
             service_id: Arr::get($data, 'service_id'),
             note: Arr::get($data, 'note'),
             price: Arr::get($data, 'price'),
-            start_date: Arr::get($data, 'start_date'),
-            end_date: Arr::get($data, 'end_date'),
+            start_date:  Arr::get($data, 'start_date') ? Carbon::parse(Arr::get($data, 'start_date')) : null,
+            end_date: Arr::get($data, 'end_date') ? Carbon::parse(Arr::get($data, 'end_date')) : null,
             status: Arr::get($data, 'status'),
         );
     }
