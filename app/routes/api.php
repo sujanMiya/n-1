@@ -9,7 +9,8 @@ use App\Http\Controllers\Api\ServiceController;
 Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/services', [ServiceController::class, 'store']);
-    Route::put('/services/{id}', [ServiceController::class, 'update']);
+    Route::put('/services/{uid}', [ServiceController::class, 'update']);
+    Route::delete('/services/{uid}', [ServiceController::class, 'destroy']);
 });
 Route::group(['prefix' => 'v1'], function () {
     Route::get('/register', [AuthController::class, 'registerView'])->name('api.register.registerView');

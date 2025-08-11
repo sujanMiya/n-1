@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\UpdateServiceRequest;
 use App\Http\Resources\ServiceResource;
 use App\Services\Services;
 use Illuminate\Http\JsonResponse;
@@ -72,16 +73,35 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Service $service)
+    public function update(UpdateServiceRequest $request, string $uid): JsonResponse
     {
-        //
+        try {
+            $service = $this->service->findServiceByUid($uid);
+            if (!$service) {
+                return apiErrorResponse('Service Show failed: ', 400);
+            }
+            $serviceDto = $this->service->prepareDtoUpdateService($service, $request->validated());
+            $this->service->updatedServices($serviceDto, $service);
+            return apiSuccessResponse(new ServiceResource($service), 'Update Service Successfully', 200);
+        } catch (\Exception $e) {
+            return apiErrorResponse('Service Show failed: ' . $e->getMessage(), 400);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Service $service)
+    public function destroy(string $uid): JsonResponse
     {
-        //
+        try {
+            $service = $this->service->findServiceByUid($uid);
+            if (!$service) {
+                return api()->fails('No services found');
+            }
+            $service->delete();
+            return apiSuccessResponse(new ServiceResource($service), 'Delete Service Successfully', 200);
+        } catch (\Exception $e) {
+            return apiErrorResponse('Delete Service Successfully : ' . $e->getMessage(), 400);
+        }
     }
 }

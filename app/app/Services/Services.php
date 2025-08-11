@@ -45,4 +45,19 @@ class Services
         return Service::select(['id', 'name', 'price', 'image_url', 'uid', 'description', 'status'])
             ->where('uid', $uid)->first();
     }
+    public function prepareDtoUpdateService($service, array $data): ServiceDTO
+    {
+        return new ServiceDTO(
+            name: Arr::get($data, 'name'),
+            uid: $service->uid,
+            image_url: Arr::get($data, 'image_url'),
+            description: Arr::get($data, 'description'),
+            price: Arr::get($data, 'price'),
+            status: Arr::get($data, 'status'),
+        );
+    }
+    public function updatedServices(ServiceDTO $data, $service)
+    {
+        return $service->update([...$data->toArray()]);
+    }
 }
