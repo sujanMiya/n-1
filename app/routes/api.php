@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BookingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ServiceController;
@@ -11,6 +12,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
     Route::post('/services', [ServiceController::class, 'store']);
     Route::put('/services/{uid}', [ServiceController::class, 'update']);
     Route::delete('/services/{uid}', [ServiceController::class, 'destroy']);
+    Route::post('/bookings', [BookingController::class, 'store']);
+
 });
 Route::group(['prefix' => 'v1'], function () {
     Route::get('/register', [AuthController::class, 'registerView'])->name('api.register.registerView');

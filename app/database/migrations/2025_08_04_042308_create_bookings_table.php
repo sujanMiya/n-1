@@ -14,16 +14,14 @@ return new class extends Migration {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->string('uid', 36)->unique();
-            $table->string('user_id', 36);
-            $table->string('service_uid', 36);
+            $table->foreignId('user_id');
+            $table->foreignId('service_id');
             $table->string('note', 400)->nullable();
             $table->decimal('price', 10, 2);
             $table->dateTime('start_date');
             $table->dateTime('end_date')->nullable();
             $table->tinyInteger('status')->default(BookingEnum::PENDING);
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('service_uid')->references('uid')->on('services');
             $table->softDeletes();
         });
     }

@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Enums\ServiceEnum;
 use App\Enums\UserRoleEnum;
+use App\Models\Booking;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,23 +25,39 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
             'role' => UserRoleEnum::ADMIN
         ]);
-        User::create([
+      $user=  User::firstOrCreate([
             'name' => fake()->name(),
             'email' => 'user@example.com',
             'password' => bcrypt('password'),
             'role' => UserRoleEnum::USER,
         ]);
+        
         for ($i = 0; $i < 100; $i++) {
-             Service::create([
-                'name'=> fake()->name(). $i,
+            Service::create([
+                'name' => fake()->name() . $i,
                 'uid' => str_unique_with_prefix('se-'),
                 'image_url' => 'https://www.realsimple.com/thmb/uWsB5XxJNwi4CihWKBv_BmQ4aWY=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/dabito-living-room-7297f95db79240d095734d010681d23e.png',
                 'description' => fake()->text(50),
-                'price' => fake()->randomFloat(3,2,0),
-                'status' =>ServiceEnum::ACTIVE,
+                'price' => fake()->randomFloat(3, 2, 0),
+                'status' => ServiceEnum::ACTIVE,
                 'created_at' => now(),
                 'updated_at' => now(),
-             ]);
+            ]);
+        }
+        $services = Service::take(10)->get();
+
+        foreach ($services as $service) {
+            Booking::create([
+                'uid' => str_unique_with_prefix('Bo-'),
+                'user_id' => $user->id,
+                'service_id' => $service->id,
+                'note' => $service->name . " Booking",
+                'price' => $service->price,
+                'start_date' => now()->addDays(rand(1, 30))->setHour(9)->setMinute(0),
+                'end_date' => now()->addDays(rand(1, 30))->setHour(17)->setMinute(0),
+                'status' => ServiceEnum::ACTIVE,
+
+            ]);
         }
 
         //          $this->call([
