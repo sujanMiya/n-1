@@ -14,16 +14,23 @@ class BookingService
     }
     public function createBooking(array $data): Booking
     {
-        return $bookingDto = $this->prepareookingDTO($data);
+        $bookingDto = $this->prepareBookingDTO($data);
+        return $this->storeBooking($bookingDto);
     }
-    private function prepareookingDTO(array $data): BookingDTO
+    private function storeBooking(BookingDTO $bookingDto): Booking
+    {
+        return Booking::create($bookingDto->toArray());
+    }
+    private function prepareBookingDTO(array $data): BookingDTO
     {
         return new BookingDTO(
-            name: Arr::get($data, 'name'),
+            user_id: Arr::get($data, 'user_id'),
             uid: str_unique_with_prefix('Bo-'),
-            image_url: Arr::get($data, 'image_url'),
-            description: Arr::get($data, 'description'),
+            service_id: Arr::get($data, 'service_id'),
+            note: Arr::get($data, 'note'),
             price: Arr::get($data, 'price'),
+            start_date: Arr::get($data, 'start_date'),
+            end_date: Arr::get($data, 'end_date'),
             status: Arr::get($data, 'status'),
         );
     }
