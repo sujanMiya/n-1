@@ -17,6 +17,11 @@ class BookingController extends Controller
     public function index(Request $request){}
     public function store(BookingRequest $request)
     {
-        $bookins = $this->bookingService->createBooking($request->validated());
+        try {
+            $bookins = $this->bookingService->createBooking($request->user(),$request->validated());
+            dd($bookins);
+        } catch (\Exception $e) {
+            //throw $th;
+        }
     }
 }

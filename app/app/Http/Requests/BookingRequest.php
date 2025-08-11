@@ -24,10 +24,6 @@ class BookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => [
-                'required',
-                'exists:users,id'
-            ],
             'service_id' => [
                 'required',
                 'exists:services,id'
@@ -65,7 +61,7 @@ class BookingRequest extends FormRequest
             ]
         ];
     }
-        public function messages(): array
+    public function messages(): array
     {
         return [
             'status.required' => 'Status is required',

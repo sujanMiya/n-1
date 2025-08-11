@@ -4,6 +4,7 @@ namespace App\Services;
 use App\DTO\BookingDTO;
 use App\Models\Booking;
 use app\Models\Service;
+use App\Models\User;
 use Arr;
 class BookingService
 {
@@ -12,19 +13,19 @@ class BookingService
         dd($data);
         return Service::create($data);
     }
-    public function createBooking(array $data): Booking
+    public function createBooking(User $user, array $data): Booking
     {
-        $bookingDto = $this->prepareBookingDTO($data);
-        return $this->storeBooking($bookingDto);
+        $bookingDto = $this->prepareBookingDTO($user->id, $data);
+        return $this->storeBooking($user,$bookingDto);
     }
-    private function storeBooking(BookingDTO $bookingDto): Booking
+    private function storeBooking(User $user, BookingDTO $bookingDto): Booking
     {
-        return Booking::create($bookingDto->toArray());
+        return $user->bookings()->create($bookingDto->toArray());
     }
-    private function prepareBookingDTO(array $data): BookingDTO
+    private function prepareBookingDTO($userId, array $data): BookingDTO
     {
         return new BookingDTO(
-            user_id: Arr::get($data, 'user_id'),
+            user_id: $userId,
             uid: str_unique_with_prefix('Bo-'),
             service_id: Arr::get($data, 'service_id'),
             note: Arr::get($data, 'note'),
