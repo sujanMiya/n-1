@@ -23,7 +23,10 @@ class BookingController extends Controller
                 return apiErrorResponse('You are not authorized to view this resource', 403);
 
             $bookings = $this->bookingService->allBookingList($request->user());
-            return apiSuccessResponse($bookings, 'Booking list retrieved successfully', 200);
+            return api([
+                'services' => $bookings->toArray()['data'] ?? [],
+                'meta' => pagination_meta($bookings),
+            ])->success(__('success'));
         } catch (\Exception $e) {
             return apiErrorResponse('Booking show failed: ' . $e->getMessage(), 400);
         }
@@ -32,7 +35,10 @@ class BookingController extends Controller
     {
         try {
             $bookings = $this->bookingService->allBookingListForUser($request->user());
-            return apiSuccessResponse($bookings, 'Booking list retrieved successfully', 200);
+            return api([
+                'services' => $bookings->toArray()['data'] ?? [],
+                'meta' => pagination_meta($bookings),
+            ])->success(__('success'));
         } catch (\Exception $e) {
             return apiErrorResponse('Booking show failed: ' . $e->getMessage(), 400);
         }
