@@ -13,6 +13,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
     Route::put('/services/{uid}', [ServiceController::class, 'update']);
     Route::delete('/services/{uid}', [ServiceController::class, 'destroy']);
     Route::post('/bookings', [BookingController::class, 'store']);
+    Route::get('/admin/bookings', [BookingController::class, 'allBookingListForAdmin']);
+    Route::get('/bookings', [BookingController::class, 'allBookingListForUser']);
 
 });
 Route::group(['prefix' => 'v1'], function () {

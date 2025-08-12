@@ -39,6 +39,8 @@ class ServiceController extends Controller
     public function store(ServiceRequest $request): JsonResponse
     {
         try {
+            if (!$request->user()->isAdmin())
+                return apiErrorResponse('You are not authorized to view this resource', 403);
             $service = $this->service->store($request->validated());
             return apiSuccessResponse(new ServiceResource($service), 'Service Create successfully', 200);
         } catch (\Exception $e) {
