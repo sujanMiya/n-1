@@ -91,11 +91,22 @@ http://0.0.0.0:8000
 
 ## Project Structure
 
-This is a Laravel-based booking system with the following key features:
-- User authentication and registration
-- Admin panel access
-- RESTful API endpoints
-- Docker containerization for easy deployment
+Detailed Architecture Components with folder structures for:
+
+ -DTOs (Data Transfer Objects)
+ -Services (Business Logic Layer)
+ -Resources (API Response Formatting)
+ -Requests (Request Validation)
+ -Models with UUID implementation
+ Benefits of This Architecture
+
+ Maintainability: Clear separation of concerns
+ Testability: Easy to unit test services and DTOs
+ Scalability: Business logic separated from HTTP layer
+ Security: UUID prevents ID enumeration attacks
+ API Consistency: Resources ensure uniform response format
+ Validation: Centralized request validation
+ Type Safety: DTOs provide type hints and contracts
 
 ## Troubleshooting
 
@@ -129,4 +140,7 @@ docker-compose up --build -d
 4. Explore the booking system features
 
 # API Doc
+-Api collection link : https://elements.getpostman.com/redirect?entityId=6434911-f7ff03e6-b6d6-4f8d-81a5-6071b5120a25&entityType=collection
+
+
 
