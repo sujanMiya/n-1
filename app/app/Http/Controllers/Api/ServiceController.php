@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Requests\UpdateServiceRequest;
+use App\Http\Resources\ServiceResource;
+use App\Services\Services;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ServiceRequest;
+
+class ServiceController extends Controller
+{
+    protected Services $service;
+    public function __construct(Services $service)
+    {
+        $this->service = $service;
+    }
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(): JsonResponse
+    {
+        try {
+            $services = $this->service->all();
+            return api([
+                'services' => $services->toArray()['data'] ?? [],
+                'meta' => pagination_meta($services),
+            ])->success(__('success'));
+        } catch (\Exception $e) {
+            return apiErrorResponse('No data found ' . $e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function store(ServiceRequest $request): JsonResponse
+    {
+        try {
+            if (!$request->user()->isAdmin())
+                return apiErrorResponse('You are not authorized to view this resource', 403);
+            $service = $this->service->store($request->validated());
+            return apiSuccessResponse(new ServiceResource($service), 'Service Create successfully', 200);
+        } catch (\Exception $e) {
+            return apiErrorResponse('Service Create failed: ' . $e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $uid)
+    {
+        try {
+            $service = $this->service->findServiceByUid($uid);
+            if (!$service) {
+                return api()->fails('No services found');
+            }
+            return apiSuccessResponse(new ServiceResource($service), 'Service Show successfully', 200);
+        } catch (\Exception $e) {
+            return apiErrorResponse('Service Show failed: ' . $e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Service $service)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateServiceRequest $request, string $uid): JsonResponse
+    {
+        try {
+            $service = $this->service->findServiceByUid($uid);
+            if (!$service) {
+                return apiErrorResponse('Service Show failed: ', 400);
+            }
+            $serviceDto = $this->service->prepareDtoUpdateService($service, $request->validated());
+            $this->service->updatedServices($serviceDto, $service);
+            return apiSuccessResponse(new ServiceResource($service), 'Update Service Successfully', 200);
+        } catch (\Exception $e) {
+            return apiErrorResponse('Service Show failed: ' . $e->getMessage(), 400);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $uid): JsonResponse
+    {
+        try {
+            $service = $this->service->findServiceByUid($uid);
+            if (!$service) {
+                return api()->fails('No services found');
+            }
+            $service->delete();
+            return apiSuccessResponse(new ServiceResource($service), 'Delete Service Successfully', 200);
+        } catch (\Exception $e) {
+            return apiErrorResponse('Delete Service Successfully : ' . $e->getMessage(), 400);
+        }
+    }
+}

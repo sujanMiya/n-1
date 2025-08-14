@@ -1,12 +1,13 @@
-version: '3.8'
-
 services:
   # PHP-FPM Service (PHP 8.4)
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: laravel-app
+      args:
+        UID: ${DOCKER_UID}
+        GID: ${DOCKER_GID}
+    container_name: booking_app
     restart: unless-stopped
     working_dir: /var/www/html/app
     volumes:
@@ -17,7 +18,7 @@ services:
   # Nginx Service
   webserver:
     image: nginx:alpine
-    container_name: laravel-nginx
+    container_name: booking_nginx
     restart: unless-stopped
     ports:
       - "8000:80"
@@ -31,7 +32,7 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:15-alpine
-    container_name: laravel-postgres
+    container_name: booking_postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: laravel
